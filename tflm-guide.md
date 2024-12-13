@@ -55,7 +55,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 ```
 
-** Note: these files are included according to my project setup you have to modify according to your project structure **
+**Note: these files are included according to my project setup you have to modify according to your project structure**
 
 ## Few Additional Tips
 1. Change your filename from `main.c` to `main.cc` or `main.cpp`
