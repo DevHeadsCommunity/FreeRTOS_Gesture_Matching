@@ -38,7 +38,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE your-lib-dir-path/libtensorflow-mi
 
 ## Step 3: Generate the TFLM Tree
 Now, you have to add all the necessary `Headers` to your project but for that you have to generate the TFLM tree because tensorflow lite micro
-comes with many dependencies which it needs to fetch from the internet and the it will provide you the files which you can include in your project
+comes with many dependencies which it needs to fetch from the internet and then it will provide you the files which you can include in your project
 
 To generate the TFLM Tree use 
 ```bash 
@@ -54,9 +54,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/tflm/tensorflow/lite
 )
 ```
-### Note: these files are included according to my project setup you have to modify according to your proejct structure
+
+** Note: these files are included according to my project setup you have to modify according to your project structure **
 
 ## Few Additional Tips
 1. Change your filename from `main.c` to `main.cc` or `main.cpp`
 2. You may have to use `third_party` tools like `flatbuffers` or `kissfft` then follow step 4. 
-3. You can delete all the source files since we already have compiled the `library` according to our MCU Architechture
+3. You can delete all the source files since we already have compiled the `library` according to our MCU Architecture
