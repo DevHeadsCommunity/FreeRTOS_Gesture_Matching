@@ -10,6 +10,7 @@ extern uint32_t _sbss;
 extern uint32_t _ebss;
 extern fptr __init_array_start;
 extern fptr __init_array_end;
+extern void SystemInit();
 
 void Reset_Handler();
 void NMI_Handler() __attribute__((weak, alias("Default_Handler")));
@@ -255,6 +256,7 @@ void Reset_Handler(void)
         (*p)();
     }
 
+    SystemInit();
     main(); // Call the main function
 }
 

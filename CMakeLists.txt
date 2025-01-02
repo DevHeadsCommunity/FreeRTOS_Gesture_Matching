@@ -1,20 +1,24 @@
 cmake_minimum_required(VERSION 3.28)
 
+# Include the ARM toolchan
+include(gcc-arm-none-eabi.cmake)
+
 project(freertos LANGUAGES ASM C CXX VERSION 1.0)
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
-# Include the ARM toolchan
-include(gcc-arm-none-eabi.cmake)
+
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F446RETX_FLASH.ld)
 
 file(GLOB_RECURSE FREERTOS_SOURCES 
     ${CMAKE_SOURCE_DIR}/Sources/*.c
     ${CMAKE_SOURCE_DIR}/Sources/*.cpp
-    ${CMAKE_SOURCE_DIR}/Core/Startup/*.c
+    ${CMAKE_SOURCE_DIR}/Sources/*.cc
+    ${CMAKE_SOURCE_DIR}/Core/Startup/*.s
     ${CMAKE_SOURCE_DIR}/FreeRTOS/*.c
+    ${CMAKE_SOURCE_DIR}/tflm/examples/hello_world/models/*.cc
 )
 
 # message(STATUS ${FREERTOS_SOURCES})
@@ -35,6 +39,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/tflm/third_party/gemmlowp
     ${CMAKE_SOURCE_DIR}/tflm
     ${CMAKE_SOURCE_DIR}/tflm/tensorflow/lite
+    ${CMAKE_SOURCE_DIR}/tflm/examples/hello_world
 )
 
 link_directories(${CMAKE_SOURCE_DIR}/Lib)
@@ -46,7 +51,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Lib/libtensorf
 target_compile_definitions(${PROJECT_NAME} PUBLIC STM32F446xx)
 
 # Set compiler options (e.g., enable debugging)
-target_compile_options(${PROJECT_NAME} PUBLIC -g)
+# target_compile_options(${PROJECT_NAME} PUBLIC -g)
 
 # Set linker options
 target_link_options(${PROJECT_NAME} PUBLIC 
