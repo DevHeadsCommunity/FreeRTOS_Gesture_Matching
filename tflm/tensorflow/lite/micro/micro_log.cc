@@ -18,7 +18,6 @@ limitations under the License.
 #include <cstdarg>
 #include <cstdint>
 
-
 #if !defined(TF_LITE_STRIP_ERROR_STRINGS)
 #include "tensorflow/lite/micro/debug_log.h"
 #endif

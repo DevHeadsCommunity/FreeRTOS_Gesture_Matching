@@ -19,13 +19,19 @@ file(GLOB_RECURSE FREERTOS_SOURCES
     ${CMAKE_SOURCE_DIR}/Core/Startup/*.s
     ${CMAKE_SOURCE_DIR}/FreeRTOS/*.c
     ${CMAKE_SOURCE_DIR}/tflm/examples/hello_world/models/*.cc
+
 )
+
+# file(GLOB_RECURSE TFLM_SOURCES
+#     ${CMAKE_SOURCE_DIR}/tflm/tensorflow/*.c
+#     ${CMAKE_SOURCE_DIR}/tflm/third_party/*.cc
+# )
 
 # message(STATUS ${FREERTOS_SOURCES})
 
 
 # Create the main executable target
-add_executable(${PROJECT_NAME} ${SOURCES} ${FREERTOS_SOURCES})
+add_executable(${PROJECT_NAME} ${FREERTOS_SOURCES})
 
 
 # Include directories
@@ -35,17 +41,17 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/Includes
     ${CMAKE_SOURCE_DIR}/FreeRTOS/include
     ${CMAKE_SOURCE_DIR}/FreeRTOS/portable/GCC/ARM_CM4F
+    ${CMAKE_SOURCE_DIR}/tflm
     ${CMAKE_SOURCE_DIR}/tflm/third_party/flatbuffers/include
     ${CMAKE_SOURCE_DIR}/tflm/third_party/gemmlowp
-    ${CMAKE_SOURCE_DIR}/tflm
     ${CMAKE_SOURCE_DIR}/tflm/tensorflow/lite
     ${CMAKE_SOURCE_DIR}/tflm/examples/hello_world
 )
 
-link_directories(${CMAKE_SOURCE_DIR}/Lib)
+link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 # Link TensorFlow Lite Micro library
-target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Lib/libtensorflow-microlite.a)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/lib/libtensorflow-microlite.a)
 
 # Compiler definitions
 target_compile_definitions(${PROJECT_NAME} PUBLIC STM32F446xx)
@@ -60,6 +66,7 @@ target_link_options(${PROJECT_NAME} PUBLIC
     -Wl,--print-memory-usage
     -Wl,--gc-sections
     -lc 
+    -lrdimon
     -lstdc++
     -lm
 )

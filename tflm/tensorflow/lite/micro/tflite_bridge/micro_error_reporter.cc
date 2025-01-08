@@ -18,6 +18,7 @@ limitations under the License.
 #include <cstdarg>
 #include <cstdint>
 #include <new>
+
 #include "tensorflow/lite/micro/micro_log.h"
 
 namespace {
