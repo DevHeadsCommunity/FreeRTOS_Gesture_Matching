@@ -24,10 +24,10 @@
 UARTConfig_t uart2; // Creating UART Instance
 void USART2_Config()
 {
-  uart2.pUARTx = USART2;                   // Adding USART peripheral to the instance
-  uart2.Init.BaudRate = 115200U;           // Configuring Baud Rate
-  uart2.Init.Mode = UART_MODE_TX_ONLY;     // Configuring Mode/Direction
-  uart2.Init.Parity = UART_PARITY_NONE;    // Configuring Parity Control
+  uart2.pUARTx = USART2;                    // Adding USART peripheral to the instance
+  uart2.Init.BaudRate = 115200U;            // Configuring Baud Rate
+  uart2.Init.Mode = UART_MODE_TX_ONLY;      // Configuring Mode/Direction
+  uart2.Init.Parity = UART_PARITY_NONE;     // Configuring Parity Control
   uart2.Init.WordLen = UART_WORD_LEN_8BITS; // Configuring Word length
   UART_Init(&uart2);
 }
@@ -40,11 +40,17 @@ void DebugUart(const char *s)
 extern unsigned char g_model[];
 namespace
 {
-  using HelloWorldOpResolver = tflite::MicroMutableOpResolver<1>;
+  using HelloWorldOpResolver = tflite::MicroMutableOpResolver<6>;
 
   TfLiteStatus RegisterOps(HelloWorldOpResolver &op_resolver)
   {
     TF_LITE_ENSURE_STATUS(op_resolver.AddFullyConnected());
+    TF_LITE_ENSURE_STATUS(op_resolver.AddConv2D());
+    op_resolver.AddDepthwiseConv2D();
+    op_resolver.AddMaxPool2D();
+    op_resolver.AddSoftmax();
+    op_resolver.AddReshape();
+
     return kTfLiteOk;
   }
 } // namespace
@@ -57,13 +63,13 @@ int main(int argc, char *argv[])
 
   MicroPrintf("Testing Micro Printf\n");
 
-
   tflite::InitializeTarget();
   const tflite::Model *model =
       ::tflite::GetModel(g_model);
   TFLITE_CHECK_EQ(model->version(), TFLITE_SCHEMA_VERSION);
 
   HelloWorldOpResolver op_resolver;
+
   TF_LITE_ENSURE_STATUS(RegisterOps(op_resolver));
 
   // Arena size just a round number. The exact arena usage can be determined
